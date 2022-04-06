@@ -15,7 +15,8 @@ def display_word():
             word_display += '_'
     print(word_display)
 
-# print('Word: ', display_word())
+print('Word: ')
+display_word()
 
 while guess_count < total_guess:
     guess = input('Enter your guess: ').lower()
@@ -26,16 +27,23 @@ while guess_count < total_guess:
             guess_count += 1
             break
         elif guess in word: 
-            guess_list.append(guess)
-            print(guess)
-            display_word()
+            if guess in guess_list:
+                print('You have already tried this. Do better!')
+            else: 
+                guess_list.append(guess)
+                print(guess)
+                display_word()
+        elif guess not in word: 
+                print('Letter not in word. Try again.')
+                guess_count += 1
+                guess_list_wrong.append(guess)
         else:
             if guess in guess_list_wrong:
                 print('You have already tried this. Do better!')
             else:
-                print('Letter not in word')
+                print('Not the word. Try again.')
                 guess_count += 1
-                guess_list_wrong.append(guess)
+
     else:
         print('Try again. Enter a word or letter this time')
 
@@ -46,3 +54,4 @@ print('You\'ve tried', guess_count, 'times. You lost. Game over!')
 #         print('valid')
 #     else:
 #         print('Try again. Enter a word or letter this time')
+

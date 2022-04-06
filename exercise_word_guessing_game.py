@@ -1,15 +1,15 @@
 word = 'random'
 
-total_guess = 2
+total_guess = 3
 guess_count = 0 
-
-guess_list = []
-guess_list_wrong = []
+letter_guess_list = []
+letter_guess_list_wrong = []
+word_guess_list_wrong = []
 
 def display_word():
     word_display = ''
     for l in word:
-        if l in guess_list:
+        if l in letter_guess_list:
             word_display += l
         else:
             word_display += '_'
@@ -17,37 +17,45 @@ def display_word():
 
 print('Word: ')
 display_word()
-
+guessed_right = False
 while guess_count < total_guess:
     guess = input('Enter your guess: ').lower()
     # validate_guess(guess)
     if guess.isalpha():
-        if guess == word:
-            print('You won! Word is ' + word + '!')
-            guess_count += 1
-            break
-        elif guess in word: 
-            if guess in guess_list:
-                print('You have already tried this. Do better!')
+        if len(guess) > 1:
+            if guess == word:
+                guess_count += 1
+                guessed_right = True
+                break
+            elif guess in word_guess_list_wrong:
+                print('You have already tried this word. Do better!')
+            elif guess != word: 
+                print('Not the word. Try again.')  
+                word_guess_list_wrong.append(guess) 
+                guess_count += 1
+        elif len(guess) == 1:
+            if guess in word: 
+                if guess in letter_guess_list:
+                    print('You have already tried this letter. Do better!')
+                else: 
+                    letter_guess_list.append(guess)
+                    print(guess)
+                    display_word()
             else: 
-                guess_list.append(guess)
-                print(guess)
-                display_word()
-        elif guess not in word: 
-                print('Letter not in word. Try again.')
-                guess_count += 1
-                guess_list_wrong.append(guess)
-        else:
-            if guess in guess_list_wrong:
-                print('You have already tried this. Do better!')
-            else:
-                print('Not the word. Try again.')
-                guess_count += 1
-
+                if guess in letter_guess_list_wrong:
+                    print('You have already tried this. It wasn\'t in the word. Do better!')
+                else:
+                    print('Letter not in word. Try again.')
+                    guess_count += 1
+                    letter_guess_list_wrong.append(guess)
     else:
         print('Try again. Enter a word or letter this time')
 
-print('You\'ve tried', guess_count, 'times. You lost. Game over!')
+if guessed_right:
+    print('You won! The word is {}!'.format(word))
+else:
+    print('You\'ve tried {} times. You lost. The word is {}. Game over!'.format(guess_count,word))
+
 
 # def validate_guess(guess):
 #     if guess.isalpha():
